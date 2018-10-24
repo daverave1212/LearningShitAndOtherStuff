@@ -1,0 +1,140 @@
+	To know:
+All data types are vectors (4 is actually a vector with only 1 element, 4)
+'$' is like '.', and '.' is like '_' (an ok character for variable names)
+
+	Variabile
+Types (Atomic types):
+	Logical (TRUE or FALSE)
+	Integer (20L)
+	Numeric (20, 20.0)
+	Complex (4 + 3i)
+	Character ("A", "Hello")
+		nchr(character)
+		a = paste("Hello", "World", sep = ",")
+		substr(x = str, start=2, stop=7)
+		sub(x=str, pattern="Hello", replacement="Hi")
+		strsplit(str, " ")	# Returns a vector of character
+Asign:	x=15  ==  x<-15  ==  15->x  ==  20=x
+Operators:
+	22 %% 7 == 1
+	22 %/% 7 == 3	(floor division)
+	2^10 = 1024
+	&, |	# Returns TRUE or FALSE; When comparing 2 vectors,
+			# this only compares the first element
+	&&, ||	# When comparing 2 vectors, returns an array of booleans
+	.		# You can just say my.var
+	Logical Operators:
+	&& and || work as expected
+if(condition){}else if{}else ...
+switch(x, 1 = ret1, 2 = ret2 ..., retDefault)	# If x == 1, return ret1, etc
+repeat{break} # Repeats to infinity
+while(condition){}
+for(value in vector){}
+foo <- function(int a, numeric b...){}
+foo <- function(a, b=2,...){a-b}	# Returns a-b
+foo <- function(...){args=list(...)}
+
+	Data Structures:
+1. Vector - List of a single data type
+If you put multiple data types, it converts them (to character or float)
+myVector = c(val, val, val)	# This creates a vector
+myVector = c(val)			# This creates a variable
+myVector = c(1:30)			# Fills from 1 to 30
+myVector > 3				# Returns a vector of booleans, one for each element
+myVector[3]
+myVector[2:5]	# Returns a vector
+length(v)
+v[-3]			# Returns vector without the 3rd element
+v[5] = 32
+v[3:7] = 999	# Changes all those elements to that value
+v[3:7] = v2		# This also works
+v[v %% 2 == 0]	# Returns a vector; For each element inside(v),
+				# adds it to the returned vector if it matches the condition
+sort(v, decreasing = TRUE)	# Sorts number vector
+seq(from=2, by=2, length.out=10)	# Returns 2,4,6,8,10,12,14,16,18,20
+seq(from=2, by=2, to=20)			# Returns 2,4,6,8,10,12,14,16,18,20
+(value %in% vector)		# TRUE or FALSE
+rep(x=2, times=5)  or  rep(x, each=2) or  rep(x=1:3, times=5)
+factor(v)		# Returns itself without duplicates
+is.factor(v)	# True if has no duplicates
+
+
+1.5. List - List of any data type
+myList = list(TRUE, "Heya", 10L)
+myCustomObject = list(name="Dave", age=20)	# Creates a custom object
+myCustomObject$name	# Essentialy like myCustomObject.name in any other language
+
+2. Matrix - 2D matrix array
+myMatrix = matrix(vectorOfData, nrows, ncols, byrow = TRUE)	# Or by column
+	# Fills it from left to right, top to bottom, one by one
+myMatrix = matrix(c(1:16), 4, 4)
+myMatrix[2,3]	myMatrix[2,]	myMatrix[,3]
+myMatrix = rbind(r1, r2, r3)
+(AS PARAMATER) dimnames = list(c("row1", "row2"), c("col1", "col2"))
+myMatrix["row1", "col2"]
+
+3. Array - 3D or more array
+myArray = array(c(1:12), dim = c(3,3,2))
+dimnames
+# The first par is a vector containing the data
+# The second par : the size of the array
+	# In this case, it's a 3D array
+	# It's = [2][3][3]
+# If there aren't enough, it keeps repeating the given data
+# (Try it and see)
+
+4. Data Frame - Table of data
+data.frame(name=v1, age=v2, sex=v3)
+# The first row of the data frame is v1[1] v2[1] v3[1]
+# A row is called a Record, a col is called a Variable
+df[row,col]	# Like a matrix
+df$columnName	# Returns the whole column as a vector
+df$columnName[df$columnName > 3]	# Works as suspected, because vectors
+df[df$columnName == 33,]	# For each row, if row[columnName] == 33,
+							# add it to the returned Data Frame; not sure why
+dim(df)
+df = rbind(df, data.frame(name="Dave", age=20))	# Adds a new record to the Data Frame
+df = cbind(df, hairColor=v4)	# Adds a new column
+dataFrameFromTXT = read.table(file="data.txt",	# Reads the data frame form a txt file
+				header=TRUE,                # header=true means that the first row of the file is the column names
+				sep=" ",		            # sep means that on each row, values are separated by " "
+				na.strings="`",				# na.strings means that a null value is written as `
+				stringsAsFactors=FALSE)		# no idea what this is
+write.table(x=df, file="data.txt", sep=" ", na="`", quote=FALSE, row.names=FALSE)
+	
+	Plotting
+plot(x, y)	# The first dot will appear at (x[1],y[1]) coordinates
+			# Second dot at (x[2],y[2]), etc
+abline(h=3, col="red")	# Draws a horizontal line at y=3
+segments(x0=1, y0=2, x1=5, x2=6)	# Draws a line between those points
+arrows(x0=1...
+text(x,y,labels)
+points(x,y)
+#Bonus parameters for aestetics only:
+	type = "b" or "l" or "o"	# Try them!
+		pch = 2, lty = 2	# Not very useful, but fun
+	xlab = "x axis"	# ylab
+	col  = "blue"
+	main = "My Plot :)"
+#Bonus parameters for the graph
+	xlim = c(-10, 10)	# Sets the graph bounds. Does not change the actual graph
+	ylim				# 
+	
+
+
+	Useful Functions
+class(x)		# Tells you its data type
+myDataframe <- read.csv("myFile.csv", header = TRUE)
+	# You need to set the current directory first:
+	# Session > Set Working Directory > Choose Directory
+is.integer(i) sau is.numeric(n) etc
+sprintf("4 + 5 = %d", myInt)
+sprintf("4 + 5 = %1.3f", myNumeric)
+sqrt(x) log(x, base)
+mean(v) median(v) min(v) max(v)
+ceilig(x) floor(x)
+file.choose()	# Opens the file select for the user, and returns the path to the file
+getwd()		# Returns working directory path
+
+	Exceptions
+tryCatch()... # This sucks, just do if

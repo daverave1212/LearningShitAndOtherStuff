@@ -1,0 +1,12 @@
+Node is asynchronous and works on a single thread
+You can write js code in node.exe cmd
+
+0. Create a node project
+- npm init
+- Press enter or type them in, you can just leave them blank
+-- Do this until its done
+
+1. Run a js script in node:
+- node myscript.js
+- node myscript			<- or like this
+

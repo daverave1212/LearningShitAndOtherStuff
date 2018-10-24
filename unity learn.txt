@@ -1,0 +1,368 @@
+	To Learn:
+- MUSAI: Unity animations (like grow, shrink, UI animations basically)
+- MUSAI: Particles
+- All basic functionality for 2d
+- 2d functionality as 3d
+- 3d: rotate
+
+
+- Switch from a camera to the other
+
+	0.	C# Things
+Extension Methods:
+public static class...
+	public static int DoSomeIntyThing(this int i){
+		return 1337;
+	}
+
+Read / Write file
+	void ReadFromFile(){
+		String line;
+		try{
+			StreamReader sr = new StreamReader("D:\\testfile.txt");
+			line = sr.ReadLine();
+			while (line != null){
+				print(line);
+				line = sr.ReadLine();}
+			sr.Close();}
+		catch(Exception e){
+			Console.WriteLine("Exception: " + e.Message);
+		}
+	}
+
+
+
+	1.	Developing for Different Resolutions
+When developing for mobile:
+To switch to Android view, go to File > Build Settings > select Android > Switch Platform
+To see the game in various resolutions, switch from the #Scene tab to Game tab
+- Change the resolution from the dropdown menu just below (Free Aspect is default)
+You can ONLY change the vertical scale of the camera.
+That is because the horizontal scale is AUTOMATIC depending on resolution
+UI:
+- For canvas, set UI Scale Mode to Scale With Screen Size (at Canvas Scaler)
+-- Scale With Screen Size: it will automatically resize UI with the screen
+-- Constant pixel size: it will NOT resize the UI
+To set Portrait or Landscape:
+- Edit > Project Settings > Player > change Default Orientation
+To anchor a UI element to a side of the screen or center:
+- Select it
+- at Rect Transform, click on the [Square in square in square idk xd]
+- Select where you want to anchor it
+- Then position it on the canvas (as you would normally do)
+-- It will now be anchored to the selected side
+
+
+
+	2. Functionality:
+1 unit = 100 pixels
+In a behavior:
+[Get Component]			: gameObject.GetComponent<ComponentNameByClass>(). ...
+	// Get a component for an object (such as Rigidbody2D, BoxCollider, etc)
+[Get a Child Object]	: gameObject.transform.GetChild(0)
+	// (such as Canvas > Sprite1) by its position on the hierarchy
+[Get Object from Scene]	: GameObject.Find ("Pickup")
+	// returns a GameObject (like the default gameObject)
+						  also try GameObject.Find("/Monster/Arm/Hand")
+[Get Children components] : GetComponentsInChildren<YourComponent>()
+[Float to int]	: (int)myFloat
+
+[Mouse Position][Cursor Position][On Screen] : Input.mousePosition	// Returns pos in pixels on screen
+									// 0,0 is bottom left corner
+[Mouse Position (Global)] : Camera.main.ScreenToWorldPoint(Input.mousePosition)
+						  
+	2.1 Camera
+[Move Camera]		:  transform.position = new Vector3(...)
+	// as a script to the camera
+
+
+	3. Events:	[Events]
+o o When Creating:
+	void Start()
+o o When Drawing:
+	void Update()
+o o When Updating:
+	void FixedUpdate()
+o o Do After:
+	Invoke("MethodName", 2)	// 2 = 2 seconds. It works with X.Invoke...
+o o Do Every X Seconds, for...
+	IEnumerator DoCheck() {
+		for(...) {
+			// execute block of code here
+			yield return new WaitForSeconds(2);	// 2 = 2 seconds.
+			}}
+	StartCoroutine("DoCheck");	// starts the routine
+o o Do Every X Seconds
+	InvokeRepeating("MethodName", 4, 2)	// start after 4 seconds, do every 2 seconds
+o o On Key Press:
+	in Update():
+		if Input.GetKeyDown("space")	// triggers like an event
+		if Input.GetKeyUp("space")	// triggers like an event
+		if Input.GetKey("space")	// returns true if the key is currently pressed
+o o On Mouse Press:
+	in Update():
+		if Input.GetMouseButtonDown(0)	// left click
+		if Input.GetMouseButtonDown(1)	// right click
+		if Input.GetMouseButtonDown(2)	// middle click
+o o On Click On Object:
+NOTE: For an object to be clickable like this, it needs a BoxCollider2D component
+	in Update():
+		if Input.GetMouseButtonDown(0):
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
+			if (hit) {
+				hit.collider.gameObject.name is your object hit
+			}
+o o Collision (2D):
+To have collision between 2 objects, at least one needs a Rigidbody 2D component
+Both need a Box Collider 2D component
+Both need a tag (set it from a default slot in the inspector)
+If you don't want them to bounce off eachother, enable 'Is Trigger' at Box Collider 2D component
+If they are both triggers and you want a collision event, do the following:
+When A collides with B:
+- B has a script with a method OnTriggerEnter2D(Collider2D other):
+	- if other.compareTag("tag of A")
+		- other.gameObject	// this returns the object, as if it were literally it
+		- other.gameObject.GetComponent<AScript>().AMethod()
+o o Shape/Object collision (2D)
+Collider2D[] objectsCollided = Physics2D.OverlapCircleAll(pos, radius, mask)
+
+	4. User Interface (UI):
+To create a menu scene (both 2D and 3D)
+- Create a UI > Panel type object in the hierarchy
+-- This will create a Canvas. That's where the UI goes
+- Select it
+- Drag and drop your background image into its Source Image slot
+- Click on 'Color' and set Alpha to maximum (255)
+-- The panel will overlay the camera
+To have a clickable UI button:
+- Give the object a 'Button' component
+- Give it the script containing the function you want to trigger on click
+-- Actually, you can have it on another object, but its more straght forward like this
+- Click on the plus
+- Drag and drop the object with the script (this object) to the slot below Runtime
+- Expand the thing on the right and select your function from there
+
+
+
+	5. Animations:
+To create a new animation:
+- Import/d&d sprites
+- Drag and drop the animation sprites into the hierarchy
+- You now have 2 new files: 1 animation, 1 controller
+- Multiple animations in the same animation need only 1 controller
+	- So, if you have Run and Stand animations, delete one of their controller
+- To combine animations into one animation with multiple states:
+	- Window > Animator
+	- Drag and drop the Animation file into the selected Controller chart thingy
+	- Right click on the orange thing > Make Transition > to the last added animation there
+	- Click on the arrow between the two animations you just linked
+	- Disable 'Has Exit Time'
+	- Expand settings
+	- Set 'Exit Time' to 0 if it's not
+	- Disable 'Fixed Duration'
+	- Set 'Transition Duration' to 0
+- Now you need to specify a condition for animations to play:
+	- In Animator, look for 'Parameters' tab
+	- Click on the '+'
+	- Create a new int parameter, call it 'state' or something
+	- Click on the arrow you clicked last time
+	- At 'Conditions', make it 'state  Equals  1' (or whatever number)
+	-- You can now see that it works if you change the state from the Parameters tab
+	-- Be careful! It's a DIRECTED graph of animations. You must make arrows back and forth!
+To create a new object and you already have the animation (and controller)
+- Create a 2D > Sprite object
+- Give it an Animator component (if it doesn't already have)
+- Drag and drop your animation Controller to its 'Controller' slot
+To change animation from script:
+	GetComponent<Animator>().SetInteger("state", 1);
+
+	6. Sound
+To play a sound (and have a sound ready to be played):
+- Create an Audio Source object in the hierarchy
+- Create a new script
+	- public AudioClip mp3File
+	- public AudioSource playableSound
+- Back in unity, drag and drop your source mp3File into the mp3File slot
+- Also drag and drop the object with this script into the Playable Sound slot
+- To play the sound, use playableSound.Play();
+To add reverb to a sound (really easy)
+- Create a new Reverb object as a subobject to a sound.
+
+	7. Drawing
+Line between 2 points:
+- Make an empty object
+- Give it a Line Renderer component
+- If you use exact coordinates, keep "Use World Space" ticked
+-- If you untick it, it will position it relative to the location of the game object
+- To change position in script:
+	Vector3 oldPos = myLineRenderer.GetPosition (0);	// 0th point of the line
+	Vector3 newPos = oldPos + new Vector3 (1.0f, 0.0f, 0.0f);
+	myLineRenderer.SetPosition (0, newPos);
+[Hide object] : GetComponent<Renderer>().enabled = false	
+[Show object] : GetComponent<Renderer>().enabled = true
+[Hide/Show object and its children]:
+	var renderers = gameObject.GetComponentsInChildren<Renderer>();
+    for (var r : Renderer in renderers) {
+        r.enabled = false/true;
+    }
+[Get Object width]	: GetComponent<Renderer>().bounds.size.x
+[Get Object height]	: GetComponent<Renderer>().bounds.size.y
+[Get Object center]	: GetComponent<Renderer>().bounds.size.center
+
+[PNG Image Pixels]	: public Texture2D myImage;
+	myImage.width	(in pixels)
+	myImage.height
+	myImage.GetPixel(x, y) (returns a Color object)
+	Color.a	.r .b .g
+[Load image from file]
+	byte[] fileData;
+	fileData = File.ReadAllBytes(filePath);m
+	myImage.LoadImage(fileData);
+	MAKE SURE YOU TICK Read/Write enabled!!
+	
+	8. Object manipulation
+[Move object on x/y/z]		: transform.position = new Vector3(x, y, z);
+[Move object by x/y/z]		: transform.position+= new Vector3(x, y, z) * Time.deltaTime
+[Get object x/y/z]			: transform.position.x/y/z
+	// Time.deltaTime is used in update. If you dont want to use it in update, no need for it
+[(3D) Move object forward/back]	: transform.forward * movementSpeed * Time.deltaTime
+[Rotate object on its x/y/z axis]	: transform.Rotate(new Vector3(xangle, yangle, zangle))
+[Rotate object around point+axis]	: transform.RotateAround(v3point, Vector3.up, angle);
+[Set rotation][Set angle]	: transform.eulerAngles = new Vector3(xangle, yangle, zangle)
+	// Vector3.up/down/forward/back/left/right
+[Move/Rotate object around its parent] : use localTransform instead of transform
+[Get object angle][Get angle]	: transform.eulerAngles
+[Destroy object]	: Destroy(this.gameObject)
+[Create object]		: make a public GameObject obj; (drag a prefab to its slot)
+	Instantiate(obj)
+	Instantiate(obj, Vector3 position, new Quaternion())
+	see Instantiate in the documentation
+Prefabs:
+- GameObject up -> Create game object (empty) -> drag and drop multiple objects onto it -> drag the new object from the scene objects into the Assets, down.
+- Now you have a Prefab
+
+	9. Tiles
+Setup:
+- Go to https://github.com/Unity-Technologies/2d-extras
+- Download as zip and extract anywhere
+- Drag and drop the Tilemap folder into the unity assets
+
+Create a simple tileset:
+- Drag and drop a png with the tiles
+-- Set its Sprite Mode to Multiple (and Texture type Sprite 2D and UI)
+-- Set its Pixels per Unit accordingly!!!
+-- Set its Filter Mode to Point (scales pixels)
+*(Optional) Set format to 32 bit
+-- Set its Compression to None
+- Hit apply
+- Click on Sprite Editor (in the same Inspector)
+- Slice (upper right corner) - by cell size or by nr of cells, your choice
+- Also, you should disable Anti-Alias (Edit > Project Settings > Quality > disable antialiasing
+Now to create a tile map (grid):
+- Create a new Tilemap object in the hierarchy
+-- It has Tilemap subobject. This is a layer
+- Go to Window > Tile Palette
+-- Now you need to create a Palette
+- It will now SAVE this palette (choose folder)
+
+Iterating through tiles:	Left to Rigt, Top to Bottom
+	void ProcessTiles2(){
+		Tilemap tilemap = GetComponent<Tilemap>();
+		BoundsInt bounds = tilemap.cellBounds;
+		TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+		for (int y = bounds.size.y - 1; y > 0; y--) {
+			for (int x = 0; x < bounds.size.x; x++) {
+				TileBase tile = allTiles[x + y * bounds.size.x];
+				if (tile != null) {
+					print("x:" + x + " y:" + y + " tile:" + tile.name);
+				} else {
+					print("x:" + x + " y:" + y + " tile: (null)");
+				}
+			}
+		}
+	}
+
+Creating Rule Tiles, for making quick levels:
+- Create a new Rule Tile
+- Choose the default sprite for it
+- Set default collider to Grid, NOT Sprite
+---- Add rules: Fixed | Grid | Single
+- Drag and drop the rule tiles you just made into the tile palette
+
+Tile Collision:
+- Add a Rigitbody, Tilemap Collider and Composite Collider
+- At Tilemap Collider, tick Used by Composite
+-- For layers without collision... make a new Tilemap
+
+Questions and Answers about tiles:
+Q: How exactly are tiles stored?
+A: A 3D matrix, z is for layers. When in doubt, use z = 0
+A: Also, this matrix starts at the most lower-left tile, even if it's null.
+The tilemap doesn't cover all the scene world per se,
+it only covers the area you paint in (a rectangle).
+A: If you add more tiles where they are not, the size DOES change!
+Ex:
+_ _ _ X X _ _
+X X _ _ _ X _
+_ X X X X X X
+_ _ _ _ X _ _
+
+Q: How can I get all tiles?
+A: Use tilemap.GetTilesBlock(tilemap.cellBounds). This returns an array. If you want it like a matrix, you must perform some calculations.
+
+Q: What is IntBounds?
+A: A square (more or less), has a position and a size.
+
+	10. Light(ing)
+In 2D, lighting is pretty much useless by default
+- For each sprite, you need a light map (overlay all the sprite with color white)
+- In unity, go to the inspector for your light map and set Texture Type to Normal Map, check Create from Greyscale and set it to 0
+- Create a new unity material
+- Set its shader type to Legacy Shaders / Transparent / Bumped Diffuse
+- Select for it the sprite and the light map
+Or yk, just use photoshop and make them with brush tool...
+
+	11. Unity Ads
+To setup ad service for your game:
+- Window (up) > Services
+- Select Organization (you or the company)
+- Ok
+- Click on ads > Turn on, Continue
+-- Enable test mode to not have ads when testing in unity
+- Create a new script
+- import: using UnityEngine.Advertisements;
+To display a full screen ad, use Advertisement.ShowAd()
+-- if Advertisement.IsRead() then Advertisement.ShowAd()
+-- This makes sure the ad is playable
+To see what the user did with the ad (watched/skipped):
+	
+	public void ShowAd(){
+		if (Advertisement.IsReady ()) {
+			var options = new ShowOptions { resultCallback = HandleAdResult };
+			Advertisement.Show("rewardedVideo", options);
+			// This calls the function when the ad is done
+			// 'Video' can be replaced by rewardedVideo or other
+			// To see all options, go to operate.dashboard.unity3d.com
+			// Select your game from the bottom
+			// Monetization > Placements
+		}
+	}
+
+	private void HandleAdResult(ShowResult result){
+		if (result == ShowResult.Finished) {
+			print ("Player watched all of the ad");
+		} else if (result == ShowResult.Skipped) {
+			print ("Player skipped the ad");
+		} else if (result == ShowResult.Failed) {
+			print ("Ad failed to load");
+		}
+	}
+
+	12. Editor Options
+Snap Settings:
+Edit > Snap settings
+
+
+	STENCYL:
+Default camera is on top-left corner.

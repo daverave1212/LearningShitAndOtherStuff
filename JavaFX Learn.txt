@@ -1,0 +1,19 @@
+JavaFX Tutorial
+Right click on project > build path > etcetc > add jfxsomething.jar
+
+0. Terminology:
+Stage > Scene > Layout(Styleable?) has stuff
+Stage = the window (JFrame)
+Scene = stuff inside the window
+StackPane = a layout
+
+1. class Main extends Application
+	// Copy paste this
+	public static void main(){
+		launch(args);
+	}
+
+	public void start(Stage primaryStage) throws Exteption{
+
+	}
+	// Copy that

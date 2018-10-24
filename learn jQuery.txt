@@ -1,0 +1,18 @@
+$("#JustLikeInCSS").css("width", "300px")
+	.html("innerHTML = ceva")	.html()
+	.val("value = ceva")		.val()
+	.css({				.css("border-color")
+		"border-color": "black",
+		"border-width": "1px"
+		})
+	.attr("src", "http://...")	.attr("src")
+	.toggleClass("Selected")
+	.addClass("Selected Bordered")
+	.removeClass("Selected Bordered")	// yes it works with multiple too :D
+
+$("a[href^='http://g").
+$("a:contains(i am a text inside an a tag)").
+
+$("div").click( function(){	// for each selected
+	$(this).
+})

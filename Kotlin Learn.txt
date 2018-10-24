@@ -1,0 +1,97 @@
+
+0. Install Android Studio
+- Download it and install it from their website
+- Install SDK:
+-- Go to Tools > SDK Manager > SDK Platforms
+--- Select all platforms between 4.4 and current version
+-- At the next tab (forgot what it's called) select everything
+-- Install them all
+- Setup AVD Manager
+-- Go to Tools > AVD Manager
+-- Create Virtual Device
+-- For the phone type and android version for the emulator, choose what you like
+--- Default ones dont work for AMD, so google how to install for AMD, its simple
+
+0. Create a new project
+- Tick 'Kotlin Support'
+- You can select what devices you want to make the app for (at least 4.4)
+- Now select an activity. This is a template kindof
+
+0. Navigation:
+App: here is the source code
+	- MainActivity is the main of your app
+	- activity_main.xml defines what your app looks like
+In the app>src>main>java we write all the code
+In the app>src>main>res we have our images, sounds, etc
+
+0. Terminology:
+- Activity : a screen (scene?)
+
+1. How to run the app
+- Tools > AVD > Click on the play sign on your preffered android device
+- After the emulator turns on, click on the green arrow in Android Studio
+- Select your device from 'connected devices'
+
+
+	Kotlin Syntax:
+  Syntax:
+var = normal variable declaration
+val = final var
+
+with(myPerson){
+	print(name)	// myPerson.name
+	print(age)}
+
+  Classes and Objects:
+class Person(val name : String, val age : Int)
+data class Person(val name : String, val age : Int)
+	// has toString, equals, etc
+
+private var nullableField : String? = null
+set (v){field = v}
+get (){}
+
+object StaticObject{
+	fun getSomething()...
+}
+
+if (myString is String) ...
+myNonString as String ==== (String)myNonString
+
+  Functions and Variables
+- You can make global functions
+fun doSomething(s : String, s2 : String = "Hi") : String{...}
+	// you can then call doSomething("Walla"), makes s2 "Hi" by default
+fun String.doSomething(s : String = "Hi") : String{...}
+	// Awesome!!!
+val String.lengthiness : int
+- You can declare local functions (functions inside functions)
+
+fun returnSomething() = 30
+	// works with 'when' keyword
+
+
+  Work Flow
+return if(x==2) x else 420
+
+when(var)
+	is String doSomething
+	is int doSomething
+	...
+
+return when(s.length){
+	1, 2, 3 -> "1, 2 or 3"
+	in setOf(2, 3, 4) -> "Yes"
+	else -> "NO"
+}
+
+repeat(6){
+	print ("eyo")
+}
+
+print("Hello World $variable")
+
+
+  Data Structures
+val map = HashMap<String, Int>()
+map["asdasda"] = 20

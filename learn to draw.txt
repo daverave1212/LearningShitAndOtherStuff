@@ -1,0 +1,8 @@
+Learn to draw
+	Pixel Art:
+0. Don't draw double dots
+0.5 You can make the double dots at 50% opacity. Looks pretty cool
+
+1. No jaggies. Use only 0, 22.5*, 45*, 67.5*, 90* lines
+1.5 Also, try to smoothen it. Longer line > medium line > short line
+    So, don't have a 

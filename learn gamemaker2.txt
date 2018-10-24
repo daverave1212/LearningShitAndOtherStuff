@@ -1,0 +1,8 @@
+	Sprites
+Sprites are images
+To create a sprite, right click on Sprites in the Resources tab on the right
+> Create sprite
+
+	Objects
+Objects are game objects
+To put in a room, drag and drop it or hold alt
